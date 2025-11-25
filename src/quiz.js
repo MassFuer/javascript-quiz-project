@@ -1,6 +1,4 @@
 class Quiz {
-  // YOUR CODE HERE:
-  //
   // 1. constructor (questions, timeLimit, timeRemaining)
   constructor(questions, timeLimit, timeRemaining) {
     this.questions = questions; // arr
@@ -19,7 +17,14 @@ class Quiz {
   }
   // 4. shuffleQuestions()
   shuffleQuestions() {
-    this.questions.sort(() => Math.random() - 0.5);
+    // this.questions.sort(() => Math.random() - 0.5);
+    for (let i = this.questions.length - 1; i > 0; i--) {
+      const j = Math.floor(Math.random() * (i + 1));
+      [this.questions[i], this.questions[j]] = [
+        this.questions[j],
+        this.questions[i],
+      ];
+    }
   }
   // 5. checkAnswer(answer)
   checkAnswer(answer) {
@@ -39,13 +44,21 @@ class Quiz {
     // }
   }
   // Day-2
+
+  // 7. Filter by difficulty
   filterQuestionsByDifficulty(difficulty) {
-    return this.questions.filter(
-      (question) => question.difficulty === difficulty
-    );
+    if (difficulty <= 3 && difficulty >= 1) {
+      this.questions = this.questions.filter(
+        (question) => question.difficulty === difficulty
+      );
+    }
   }
 
+  // 8. Get the average difficulty
   averageDifficulty() {
-    
+    return (
+      this.questions.reduce((acc, question) => acc + question.difficulty, 0) /
+      this.questions.length
+    );
   }
 }
