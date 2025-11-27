@@ -80,8 +80,29 @@ document.addEventListener("DOMContentLoaded", () => {
   let timer;
   let timerId = null;
 
+  // Function to handle the timer
+  function startTimer() {
+    timer = quiz.timeRemaining;
 
+    timerId = setInterval(() => {
+      timer--;
+      quiz.timeRemaining = timer;
 
+      // Format time as MM:SS
+      const minutes = Math.floor(timer / 60)
+        .toString()
+        .padStart(2, "0");
+      const seconds = (timer % 60).toString().padStart(2, "0");
+      timeRemainingContainer.innerText = `${minutes}:${seconds}`;
+
+      if (timer === 0) {
+        clearInterval(timerId);
+        console.log("Timer finished!");
+        showResults();
+      }
+    }, 1000);
+  }
+  startTimer();
   /************  EVENT LISTENERS  ************/
 
   nextButton.addEventListener("click", nextButtonHandler);
@@ -147,7 +168,6 @@ document.addEventListener("DOMContentLoaded", () => {
   }
 
   function nextButtonHandler() {
-
     let selectedAnswer; // A variable to store the selected answer value
 
     // 1. Get all the choice elements. You can use the `document.querySelectorAll()` method.
@@ -208,5 +228,13 @@ document.addEventListener("DOMContentLoaded", () => {
     quiz.correctAnswers = 0;
     quiz.shuffleQuestions();
     showQuestion();
+
+    quiz.timeRemaining = quizDuration;
+    const minutes = Math.floor(quiz.timeRemaining / 60)
+      .toString()
+      .padStart(2, "0");
+    const seconds = (quiz.timeRemaining % 60).toString().padStart(2, "0");
+    timeRemainingContainer.innerText = `${minutes}:${seconds}`;
+    startTimer();
   });
 });

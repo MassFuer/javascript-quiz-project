@@ -28,9 +28,12 @@ class Quiz {
   }
   // 5. checkAnswer(answer)
   checkAnswer(answer) {
-    if (answer) {
+    const currentQuestion = this.getQuestion();
+    if (answer === currentQuestion.answer) {
       this.correctAnswers++;
+      return true;
     }
+    return false;
   }
   // 6. hasEnded()
   hasEnded() {
