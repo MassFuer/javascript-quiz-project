@@ -78,6 +78,9 @@ document.addEventListener("DOMContentLoaded", () => {
   /************  TIMER  ************/
 
   let timer;
+  let timerId = null;
+
+
 
   /************  EVENT LISTENERS  ************/
 
@@ -144,13 +147,13 @@ document.addEventListener("DOMContentLoaded", () => {
   }
 
   function nextButtonHandler() {
+
     let selectedAnswer; // A variable to store the selected answer value
 
-    // YOUR CODE HERE:
-    //
     // 1. Get all the choice elements. You can use the `document.querySelectorAll()` method.
     const allChoices = document.querySelectorAll("input");
     console.log(allChoices);
+
     // 2. Loop through all the choice elements and check which one is selected
     // Hint: Radio input elements have a property `.checked` (e.g., `element.checked`).
     //  When a radio input gets selected the `.checked` property will be set to true.
@@ -175,7 +178,13 @@ document.addEventListener("DOMContentLoaded", () => {
       showQuestion();
     }
   }
+
   function showResults() {
+    // Clear the timer interval when quiz ends
+    if (timerId) {
+      clearInterval(timerId);
+    }
+
     // YOUR CODE HERE:
     //
     // 1. Hide the quiz view (div#quizView)
@@ -187,4 +196,17 @@ document.addEventListener("DOMContentLoaded", () => {
     // 3. Update the result container (div#result) inner text to show the number of correct answers out of total questions
     resultContainer.innerText = `You scored ${quiz.correctAnswers} out of ${quiz.questions.length} correct answers!`;
   }
+
+  // Restart quiz button
+  const restartButton = document.getElementById("restartButton");
+  restartButton.addEventListener("click", () => {
+    // Reload the page to restart the quiz
+    // 1. Hide the quiz view (div#quizView)
+    endView.style.display = "none";
+    quizView.style.display = "flex";
+    quiz.currentQuestionIndex = 0;
+    quiz.correctAnswers = 0;
+    quiz.shuffleQuestions();
+    showQuestion();
+  });
 });
